@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Pablo Bonillo - Work experience, skills and contact">
+  <title>Pablo Bonillo — Portfolio</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a5f',
+            accent: '#3b82f6',
+            surface: '#f8fafc',
+            muted: '#64748b',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-surface text-gray-800 font-sans antialiased">
+
+  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link" data-i18n="skip-link">Skip to main content</a>
+
+  <!-- Sidebar Navigation -->
+  <nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation" data-i18n="nav.label" data-i18n-attr="aria-label">
+    <div class="sidebar-inner">
+      <ul class="sidebar-menu" role="list">
+        <li>
+          <a href="#hero" class="sidebar-link active" aria-current="page" aria-label="Home" data-i18n="nav.home" data-i18n-attr="aria-label">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span class="sidebar-label" data-i18n="nav.home">Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#skills" class="sidebar-link" aria-label="Skills" data-i18n="nav.skills" data-i18n-attr="aria-label">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            <span class="sidebar-label" data-i18n="nav.skills">Skills</span>
+          </a>
+        </li>
+        <li>
+          <a href="#timeline" class="sidebar-link" aria-label="Experience" data-i18n="nav.experience" data-i18n-attr="aria-label">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <span class="sidebar-label" data-i18n="nav.experience">Experience</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact" class="sidebar-link" aria-label="Contact" data-i18n="nav.contact" data-i18n-attr="aria-label">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <span class="sidebar-label" data-i18n="nav.contact">Contact</span>
+          </a>
+        </li>
+      </ul>
+
+  </nav>
+
+  <!-- Language Toggle (fixed top-right) -->
+  <button
+    id="lang-toggle"
+    class="lang-toggle-fixed"
+    aria-label="Switch to Spanish"
+    data-i18n="lang.toggle.aria" data-i18n-attr="aria-label"
+  >ES</button>
+
+  <!-- Hamburger button (mobile) -->
+  <button
+    id="sidebar-toggle"
+    class="sidebar-toggle"
+    aria-expanded="false"
+    aria-controls="sidebar"
+    aria-label="Open navigation menu"
+    data-i18n="hamburger.open" data-i18n-attr="aria-label"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <!-- Overlay for mobile sidebar -->
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content" tabindex="-1">
+
+    <!-- Hero Section -->
+    <section id="hero" class="section hero-section" aria-labelledby="hero-heading">
+      <div class="hero-content">
+        <div class="hero-avatar">
+          <img src="assets/Profile pic.jfif" alt="Pablo Bonillo" class="hero-avatar-img">
+        </div>
+        <h1 id="hero-heading" class="hero-name" data-i18n="hero.name">Pablo Bonillo</h1>
+        <p class="hero-title" data-i18n="hero.title">Senior Front-End Engineer | React & TypeScript</p>
+        <p class="hero-description" data-i18n="hero.description">
+          Senior Front-End Engineer with 8+ years of experience building scalable,
+          accessible, and high-performance web applications. Specialized in React,
+          TypeScript, and modern JavaScript ecosystems.
+        </p>
+        <div class="hero-links">
+          <a href="#contact" class="hero-btn primary" data-i18n="hero.cta.contact">Contact me</a>
+          <a href="#timeline" class="hero-btn secondary" data-i18n="hero.cta.experience">View experience</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section skills-section" aria-labelledby="skills-heading">
+      <h2 id="skills-heading" class="section-title" data-i18n="skills.heading">Skills</h2>
+      <p class="section-subtitle" data-i18n="skills.subtitle">Technologies and tools I master</p>
+
+      <div class="skills-grid">
+        <!-- Frontend -->
+        <div class="skill-category fade-in">
+          <h3 class="skill-category-title" data-i18n="skills.frontend">Frontend</h3>
+          <div class="skill-tags">
+            <span class="skill-tag frontend">HTML5</span>
+            <span class="skill-tag frontend">CSS3</span>
+            <span class="skill-tag frontend">JavaScript</span>
+            <span class="skill-tag frontend">TypeScript</span>
+            <span class="skill-tag frontend">React</span>
+            <span class="skill-tag frontend">Redux</span>
+            <span class="skill-tag frontend">React Testing Library</span>
+            <span class="skill-tag frontend">Tailwind CSS</span>
+          </div>
+        </div>
+
+        <!-- Backend -->
+        <div class="skill-category fade-in">
+          <h3 class="skill-category-title" data-i18n="skills.backend">Backend</h3>
+          <div class="skill-tags">
+            <span class="skill-tag backend">Node.js</span>
+            <span class="skill-tag backend">Express</span>
+            <span class="skill-tag backend">PostgreSQL</span>
+            <span class="skill-tag backend">REST APIs</span>
+            <span class="skill-tag backend">GraphQL</span>
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div class="skill-category fade-in">
+          <h3 class="skill-category-title" data-i18n="skills.tools">Tools</h3>
+          <div class="skill-tags">
+            <span class="skill-tag tools">Git</span>
+            <span class="skill-tag tools">Docker</span>
+            <span class="skill-tag tools">Linux</span>
+            <span class="skill-tag tools">Postman</span>
+            <span class="skill-tag tools">OpenCode</span>
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="skill-category fade-in">
+          <h3 class="skill-category-title" data-i18n="skills.languages">Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag languages">Español (Native)</span>
+            <span class="skill-tag languages">English (C1)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="section timeline-section" aria-labelledby="timeline-heading">
+      <h2 id="timeline-heading" class="section-title" data-i18n="timeline.heading">Work Experience</h2>
+      <p class="section-subtitle" data-i18n="timeline.subtitle">My professional journey</p>
+
+      <div class="timeline" role="list" aria-label="Work experience timeline" data-i18n="timeline.aria" data-i18n-attr="aria-label">
+        <!-- Timeline Item 1 -->
+        <article class="timeline-item fade-in">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">
+              <time datetime="2021-03" data-i18n="timeline.1.date.start">Mar 2021</time> — <time datetime="2026-06" data-i18n="timeline.1.date.end">Jun 2026</time>
+            </div>
+            <h3 class="timeline-role" data-i18n="timeline.1.role">Sr. React Developer</h3>
+            <p class="timeline-company" data-i18n="timeline.1.company">Iseatz — New Orleans, United States (Remote)</p>
+            <p class="timeline-description" data-i18n="timeline.1.description">
+              Developed and maintained customer-facing features for the American Express
+              Travel platform using React and TypeScript. Collaborated with product managers,
+              designers, QA engineers, and backend teams in an Agile environment.
+              Led accessibility initiatives improving WCAG compliance and contributed to
+              performance improvements and frontend architecture decisions.
+            </p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">React</span>
+              <span class="timeline-tag">TypeScript</span>
+              <span class="timeline-tag">Redux</span>
+              <span class="timeline-tag">SASS</span>
+              <span class="timeline-tag">Docker</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Timeline Item 2 -->
+        <article class="timeline-item fade-in">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">
+              <time datetime="2020" data-i18n="timeline.2.date.start">2020</time> — <time datetime="2021" data-i18n="timeline.2.date.end">2021</time>
+            </div>
+            <h3 class="timeline-role" data-i18n="timeline.2.role">Frontend Engineer</h3>
+            <p class="timeline-company" data-i18n="timeline.2.company">Doctor.com / Press Ganey — New York, United States (Remote)</p>
+            <p class="timeline-description" data-i18n="timeline.2.description">
+              Development and maintenance of new and existing features on
+              Doctor.com platform providing users with a set of tools to manage
+              their profiles and improve their overall visibility across the web.
+            </p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">React</span>
+              <span class="timeline-tag">TypeScript</span>
+              <span class="timeline-tag">Redux Toolkit</span>
+              <span class="timeline-tag">Redux Saga</span>
+              <span class="timeline-tag">Material UI</span>
+              <span class="timeline-tag">SASS</span>
+              <span class="timeline-tag">WordPress</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Timeline Item 3 -->
+        <article class="timeline-item fade-in">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">
+              <time datetime="2020" data-i18n="timeline.3.date.start">2020</time>
+            </div>
+            <h3 class="timeline-role" data-i18n="timeline.3.role">Backend Developer</h3>
+            <p class="timeline-company" data-i18n="timeline.3.company">IT Warp Consulting — Buenos Aires, Argentina (Remote)</p>
+            <p class="timeline-description" data-i18n="timeline.3.description">
+              Development and maintenance of microservice platform for ISeatz.
+            </p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">Elixir</span>
+              <span class="timeline-tag">Ruby</span>
+              <span class="timeline-tag">Java</span>
+              <span class="timeline-tag">AWS</span>
+              <span class="timeline-tag">Docker</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Timeline Item 4 -->
+        <article class="timeline-item fade-in">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">
+              <time datetime="2018" data-i18n="timeline.4.date.start">2018</time> — <time datetime="2020" data-i18n="timeline.4.date.end">2020</time>
+            </div>
+            <h3 class="timeline-role" data-i18n="timeline.4.role">Developer</h3>
+            <p class="timeline-company" data-i18n="timeline.4.company">Leafnoise — Buenos Aires, Argentina</p>
+            <p class="timeline-description" data-i18n="timeline.4.description">
+              Maintenance and development of new modules in projects for the
+              Ministry of Production and Labour of the Argentine Nation.
+            </p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">PHP</span>
+              <span class="timeline-tag">Laravel</span>
+              <span class="timeline-tag">MySQL</span>
+              <span class="timeline-tag">PostgreSQL</span>
+              <span class="timeline-tag">Python</span>
+              <span class="timeline-tag">jQuery</span>
+              <span class="timeline-tag">React</span>
+              <span class="timeline-tag">Docker</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contact Footer -->
+    <footer id="contact" class="section contact-section" aria-labelledby="contact-heading">
+      <div class="contact-inner">
+        <h2 id="contact-heading" class="section-title" data-i18n="contact.heading">Contact</h2>
+        <p class="section-subtitle" data-i18n="contact.subtitle">Want to work together? Get in touch</p>
+
+        <form id="contact-form" class="contact-form" novalidate aria-label="Contact form" data-i18n="contact.form.aria" data-i18n-attr="aria-label">
+          <div class="form-group">
+            <label for="name" class="form-label"><span data-i18n="contact.name">Name</span> <span class="required" aria-hidden="true">*</span></label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-input"
+              required
+              aria-required="true"
+              autocomplete="name"
+              placeholder="Your name"
+              data-i18n="contact.name.placeholder" data-i18n-attr="placeholder"
+            >
+            <span id="name-error" class="form-error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label"><span data-i18n="contact.email">Email</span> <span class="required" aria-hidden="true">*</span></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              required
+              aria-required="true"
+              autocomplete="email"
+              placeholder="your@email.com"
+              data-i18n="contact.email.placeholder" data-i18n-attr="placeholder"
+            >
+            <span id="email-error" class="form-error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label"><span data-i18n="contact.message">Message</span> <span class="required" aria-hidden="true">*</span></label></label>
+            <textarea
+              id="message"
+              name="message"
+              class="form-input form-textarea"
+              required
+              aria-required="true"
+              rows="5"
+              placeholder="Tell me about your project..."
+              data-i18n="contact.message.placeholder" data-i18n-attr="placeholder"
+            ></textarea>
+            <span id="message-error" class="form-error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <button type="submit" class="form-submit" data-i18n="contact.submit">
+            Send message
+          </button>
+
+          <div id="form-success" class="form-success" role="status" aria-live="polite" hidden data-i18n="contact.success">
+            Message sent! I'll get back to you soon.
+          </div>
+        </form>
+
+        <div class="footer-bottom">
+          <p class="footer-copy">&copy; 2026 Pablo Bonillo. <span data-i18n="contact.footer">All rights reserved.</span></p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
