@@ -206,12 +206,34 @@ function initBinaryRain() {
   if (!canvas || prefersReducedMotion.matches) return;
 
   const context = canvas.getContext("2d");
-  const fontSize = 15;
-  const columnDensity = 63;
-  let columns = [];
+  const layers = [
+    { fontSize: 9, columnSpacing: 38, speed: [0.2, 0.34], opacity: 0.12 },
+    { fontSize: 15, columnSpacing: 64, speed: [0.36, 0.56], opacity: 0.18 },
+    { fontSize: 24, columnSpacing: 112, speed: [0.52, 0.78], opacity: 0.27 },
+  ];
+  const trailDuration = 1200;
+  let drops = [];
+  let glyphs = [];
   let animationFrame;
   let lastFrame = 0;
   let isRunning = false;
+
+  function createDrop(layer) {
+    return {
+      layer,
+      x: Math.random() * window.innerWidth,
+      y: 0,
+      speed: 0,
+      nextStart: performance.now() + Math.random() * 5000,
+    };
+  }
+
+  function startDrop(drop, timestamp) {
+    drop.x = Math.random() * window.innerWidth;
+    drop.y = -drop.layer.fontSize * (1 + Math.random() * 10);
+    drop.speed = drop.layer.speed[0] + Math.random() * (drop.layer.speed[1] - drop.layer.speed[0]);
+    drop.nextStart = timestamp;
+  }
 
   function resize() {
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -220,39 +242,44 @@ function initBinaryRain() {
     canvas.style.width = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    columns = Array.from(
-      { length: Math.ceil(window.innerWidth / columnDensity) },
-      () => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * -window.innerHeight,
-        speed: 0.35 + Math.random() * 0.35,
-      })
+    drops = layers.flatMap((layer) =>
+      Array.from({ length: Math.ceil(window.innerWidth / layer.columnSpacing) }, () => createDrop(layer))
     );
+    glyphs = [];
   }
 
   function draw(timestamp) {
     animationFrame = window.requestAnimationFrame(draw);
-    if (timestamp - lastFrame < 90) return;
+    if (timestamp - lastFrame < 50) return;
 
+    const elapsed = Math.min(timestamp - lastFrame || 50, 100);
     lastFrame = timestamp;
-    // Fade existing glyphs without painting an opaque layer over the page.
-    context.save();
-    context.globalCompositeOperation = "destination-out";
-    context.fillStyle = "rgba(0, 0, 0, 0.42)";
-    context.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    context.restore();
-    context.fillStyle = "rgba(116, 255, 192, 0.24)";
-    context.font = `600 ${fontSize}px monospace`;
+    drops.forEach((drop) => {
+      if (timestamp < drop.nextStart) return;
+      if (!drop.speed) startDrop(drop, timestamp);
 
-    columns.forEach((drop) => {
-      context.fillText(Math.random() > 0.5 ? "0" : "1", drop.x, drop.y);
-      drop.y += fontSize * drop.speed;
+      glyphs.push({
+        character: Math.random() > 0.5 ? "0" : "1",
+        x: drop.x,
+        y: drop.y,
+        layer: drop.layer,
+        createdAt: timestamp,
+      });
+      drop.y += drop.layer.fontSize * drop.speed * (elapsed / 90);
 
-      if (drop.y > window.innerHeight && Math.random() > 0.975) {
-        drop.x = Math.random() * window.innerWidth;
-        drop.y = Math.random() * -window.innerHeight * 0.2;
-        drop.speed = 0.35 + Math.random() * 0.35;
+      if (drop.y > window.innerHeight + drop.layer.fontSize * 8) {
+        drop.speed = 0;
+        drop.nextStart = timestamp + 400 + Math.random() * 2600;
       }
+    });
+
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    glyphs = glyphs.filter((glyph) => timestamp - glyph.createdAt < trailDuration);
+    glyphs.forEach((glyph) => {
+      const remainingOpacity = 1 - (timestamp - glyph.createdAt) / trailDuration;
+      context.fillStyle = `rgba(116, 255, 192, ${glyph.layer.opacity * remainingOpacity})`;
+      context.font = `600 ${glyph.layer.fontSize}px monospace`;
+      context.fillText(glyph.character, glyph.x, glyph.y);
     });
   }
 
@@ -260,6 +287,7 @@ function initBinaryRain() {
     if (!isRunning) return;
     window.cancelAnimationFrame(animationFrame);
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    glyphs = [];
     isRunning = false;
   }
 

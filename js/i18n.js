@@ -21,7 +21,7 @@ const translations = {
     // Hero
     "hero.name": "Pablo Bonillo",
     "hero.kicker": "Frontend engineer",
-    "hero.title": "Senior Front-End Engineer | React & TypeScript",
+    "hero.title": "Senior Software engineer (Frontend focus) | React & Typescript | Fullstack",
     "hero.description":
       "Senior Front-End Engineer with 8+ years of experience building scalable, accessible, and high-performance web applications. Specialized in React, TypeScript, and modern JavaScript ecosystems.",
     "hero.cta.contact": "Contact me",
@@ -118,7 +118,7 @@ const translations = {
     // Hero
     "hero.name": "Pablo Bonillo",
     "hero.kicker": "Frontend engineer",
-    "hero.title": "Senior Front-End Engineer | React & TypeScript",
+    "hero.title": "Senior Software engineer (Frontend focus) | React & Typescript | Fullstack",
     "hero.description":
       "Senior Front-End Engineer con más de 8 años de experiencia construyendo aplicaciones web escalables, accesibles y de alto rendimiento. Especializado en React, TypeScript y ecosistemas modernos de JavaScript.",
     "hero.cta.contact": "Contactame",
