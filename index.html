@@ -6,6 +6,14 @@
   <meta name="description" content="Portfolio of Pablo Bonillo - Work experience, skills and contact">
   <title>Pablo Bonillo — Portfolio</title>
 
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("portfolio-theme");
+      const theme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,7 +42,9 @@
   <!-- Custom styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-surface text-gray-800 font-sans antialiased">
+  <body class="font-sans antialiased">
+
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
 
   <!-- Skip to content -->
   <a href="#main-content" class="skip-link" data-i18n="skip-link">Skip to main content</a>
@@ -79,13 +89,31 @@
 
   </nav>
 
-  <!-- Language Toggle (fixed top-right) -->
-  <button
-    id="lang-toggle"
-    class="lang-toggle-fixed"
-    aria-label="Switch to Spanish"
-    data-i18n="lang.toggle.aria" data-i18n-attr="aria-label"
-  >ES</button>
+  <!-- Display controls (fixed top-right) -->
+  <div class="display-controls">
+    <button
+      id="theme-toggle"
+      class="display-toggle theme-toggle"
+      type="button"
+      aria-label="Switch to dark theme"
+      aria-pressed="false"
+      data-i18n="theme.toggle.dark" data-i18n-attr="aria-label"
+    >
+      <svg class="theme-icon theme-icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m15.364-6.364-1.06 1.06M6.697 17.303l-1.06 1.06m12.728 0-1.06-1.06M6.697 6.697l-1.06-1.06M15.5 12a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z"/>
+      </svg>
+      <svg class="theme-icon theme-icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.354 15.354A8.5 8.5 0 018.646 3.646 8.5 8.5 0 1012 20.5a8.5 8.5 0 008.354-5.146z"/>
+      </svg>
+      <span class="sr-only" data-i18n="theme.toggle.label">Theme</span>
+    </button>
+    <button
+      id="lang-toggle"
+      class="display-toggle lang-toggle"
+      aria-label="Switch to Spanish"
+      data-i18n="lang.toggle.aria" data-i18n-attr="aria-label"
+    >ES</button>
+  </div>
 
   <!-- Hamburger button (mobile) -->
   <button
@@ -109,7 +137,8 @@
 
     <!-- Hero Section -->
     <section id="hero" class="section hero-section" aria-labelledby="hero-heading">
-      <div class="hero-content">
+      <div class="hero-content fade-in">
+        <p class="hero-kicker" data-i18n="hero.kicker">Frontend engineer</p>
         <div class="hero-avatar">
           <img src="assets/Profile pic.jfif" alt="Pablo Bonillo" class="hero-avatar-img">
         </div>
@@ -129,8 +158,11 @@
 
     <!-- Skills Section -->
     <section id="skills" class="section skills-section" aria-labelledby="skills-heading">
-      <h2 id="skills-heading" class="section-title" data-i18n="skills.heading">Skills</h2>
-      <p class="section-subtitle" data-i18n="skills.subtitle">Technologies and tools I master</p>
+      <div class="section-heading fade-in">
+        <p class="section-eyebrow">01 / <span data-i18n="skills.eyebrow">Capabilities</span></p>
+        <h2 id="skills-heading" class="section-title" data-i18n="skills.heading">Skills</h2>
+        <p class="section-subtitle" data-i18n="skills.subtitle">Technologies and tools I work with</p>
+      </div>
 
       <div class="skills-grid">
         <!-- Frontend -->
@@ -185,8 +217,11 @@
 
     <!-- Timeline Section -->
     <section id="timeline" class="section timeline-section" aria-labelledby="timeline-heading">
-      <h2 id="timeline-heading" class="section-title" data-i18n="timeline.heading">Work Experience</h2>
-      <p class="section-subtitle" data-i18n="timeline.subtitle">My professional journey</p>
+      <div class="section-heading fade-in">
+        <p class="section-eyebrow">02 / <span data-i18n="timeline.eyebrow">Career path</span></p>
+        <h2 id="timeline-heading" class="section-title" data-i18n="timeline.heading">Work Experience</h2>
+        <p class="section-subtitle" data-i18n="timeline.subtitle">My professional journey</p>
+      </div>
 
       <div class="timeline" role="list" aria-label="Work experience timeline" data-i18n="timeline.aria" data-i18n-attr="aria-label">
         <!-- Timeline Item 1 -->
@@ -294,8 +329,11 @@
     <!-- Contact Footer -->
     <footer id="contact" class="section contact-section" aria-labelledby="contact-heading">
       <div class="contact-inner">
-        <h2 id="contact-heading" class="section-title" data-i18n="contact.heading">Contact</h2>
-        <p class="section-subtitle" data-i18n="contact.subtitle">Want to work together? Get in touch</p>
+        <div class="section-heading fade-in">
+          <p class="section-eyebrow">03 / <span data-i18n="contact.eyebrow">Let's talk</span></p>
+          <h2 id="contact-heading" class="section-title" data-i18n="contact.heading">Contact</h2>
+          <p class="section-subtitle" data-i18n="contact.subtitle">Want to work together? Get in touch</p>
+        </div>
 
         <form id="contact-form" class="contact-form" novalidate aria-label="Contact form" data-i18n="contact.form.aria" data-i18n-attr="aria-label">
           <div class="form-group">
@@ -331,7 +369,7 @@
           </div>
 
           <div class="form-group">
-            <label for="message" class="form-label"><span data-i18n="contact.message">Message</span> <span class="required" aria-hidden="true">*</span></label></label>
+            <label for="message" class="form-label"><span data-i18n="contact.message">Message</span> <span class="required" aria-hidden="true">*</span></label>
             <textarea
               id="message"
               name="message"

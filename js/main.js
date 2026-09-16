@@ -5,9 +5,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   initLanguage();
   initLanguageToggle();
+  initTheme();
   initSidebar();
   initScrollSpy();
   initFadeIn();
+  initScrollProgress();
   initContactForm();
 });
 
@@ -65,6 +67,37 @@ function initSidebar() {
       }
     });
   });
+}
+
+/* ========================================
+   Theme
+   ======================================== */
+function getTheme() {
+  return document.documentElement.dataset.theme || "light";
+}
+
+function setTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("portfolio-theme", theme);
+
+  const toggle = document.getElementById("theme-toggle");
+  if (!toggle) return;
+
+  const isDark = theme === "dark";
+  toggle.setAttribute("aria-pressed", String(isDark));
+  toggle.setAttribute("aria-label", t(isDark ? "theme.toggle.light" : "theme.toggle.dark"));
+}
+
+function initTheme() {
+  const toggle = document.getElementById("theme-toggle");
+  if (!toggle) return;
+
+  setTheme(getTheme());
+  toggle.addEventListener("click", () => {
+    setTheme(getTheme() === "dark" ? "light" : "dark");
+  });
+
+  document.addEventListener("languageChanged", () => setTheme(getTheme()));
 }
 
 /* ========================================
@@ -135,6 +168,31 @@ function initFadeIn() {
   );
 
   elements.forEach((el) => observer.observe(el));
+}
+
+/* ========================================
+   Scroll Progress
+   ======================================== */
+function initScrollProgress() {
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (!progressBar) return;
+
+  let ticking = false;
+  const updateProgress = () => {
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+    progressBar.style.transform = `scaleX(${Math.min(progress, 100) / 100})`;
+    ticking = false;
+  };
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener("resize", updateProgress);
+  updateProgress();
 }
 
 /* ========================================

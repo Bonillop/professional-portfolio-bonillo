@@ -20,6 +20,7 @@ const translations = {
 
     // Hero
     "hero.name": "Pablo Bonillo",
+    "hero.kicker": "Frontend engineer",
     "hero.title": "Senior Front-End Engineer | React & TypeScript",
     "hero.description":
       "Senior Front-End Engineer with 8+ years of experience building scalable, accessible, and high-performance web applications. Specialized in React, TypeScript, and modern JavaScript ecosystems.",
@@ -28,7 +29,8 @@ const translations = {
 
     // Skills
     "skills.heading": "Skills",
-    "skills.subtitle": "Technologies and tools I master",
+    "skills.eyebrow": "Capabilities",
+    "skills.subtitle": "Technologies and tools I work with",
     "skills.frontend": "Frontend",
     "skills.backend": "Backend",
     "skills.tools": "Tools",
@@ -36,6 +38,7 @@ const translations = {
 
     // Timeline
     "timeline.heading": "Work Experience",
+    "timeline.eyebrow": "Career path",
     "timeline.subtitle": "My professional journey",
     "timeline.aria": "Work experience timeline",
 
@@ -68,6 +71,7 @@ const translations = {
 
     // Contact
     "contact.heading": "Contact",
+    "contact.eyebrow": "Let's talk",
     "contact.subtitle": "Want to work together? Get in touch",
     "contact.form.aria": "Contact form",
     "contact.name": "Name",
@@ -89,6 +93,11 @@ const translations = {
     // Language toggle
     "lang.toggle": "ES",
     "lang.toggle.aria": "Switch to Spanish",
+
+    // Theme toggle
+    "theme.toggle.label": "Theme",
+    "theme.toggle.dark": "Switch to dark theme",
+    "theme.toggle.light": "Switch to light theme",
   },
 
   es: {
@@ -108,6 +117,7 @@ const translations = {
 
     // Hero
     "hero.name": "Pablo Bonillo",
+    "hero.kicker": "Frontend engineer",
     "hero.title": "Senior Front-End Engineer | React & TypeScript",
     "hero.description":
       "Senior Front-End Engineer con más de 8 años de experiencia construyendo aplicaciones web escalables, accesibles y de alto rendimiento. Especializado en React, TypeScript y ecosistemas modernos de JavaScript.",
@@ -116,7 +126,8 @@ const translations = {
 
     // Skills
     "skills.heading": "Skills",
-    "skills.subtitle": "Tecnologías y herramientas que domino",
+    "skills.eyebrow": "Capacidades",
+    "skills.subtitle": "Tecnologías y herramientas que manejo",
     "skills.frontend": "Frontend",
     "skills.backend": "Backend",
     "skills.tools": "Herramientas",
@@ -124,6 +135,7 @@ const translations = {
 
     // Timeline
     "timeline.heading": "Experiencia Laboral",
+    "timeline.eyebrow": "Trayectoria",
     "timeline.subtitle": "Mi trayectoria profesional",
     "timeline.aria": "Línea de tiempo de experiencia laboral",
 
@@ -156,6 +168,7 @@ const translations = {
 
     // Contact
     "contact.heading": "Contacto",
+    "contact.eyebrow": "Hablemos",
     "contact.subtitle": "¿Trabajamos juntos? Escribime",
     "contact.form.aria": "Formulario de contacto",
     "contact.name": "Nombre",
@@ -177,6 +190,11 @@ const translations = {
     // Language toggle
     "lang.toggle": "EN",
     "lang.toggle.aria": "Cambiar a inglés",
+
+    // Theme toggle
+    "theme.toggle.label": "Tema",
+    "theme.toggle.dark": "Cambiar a tema oscuro",
+    "theme.toggle.light": "Cambiar a tema claro",
   },
 };
 
