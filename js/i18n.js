@@ -23,7 +23,7 @@ const translations = {
     "hero.kicker": "Frontend engineer",
     "hero.title": "Senior Software engineer (Frontend focus) | React & Typescript | Fullstack",
     "hero.description":
-      "Senior Front-End Engineer with 8+ years of experience building scalable, accessible, and high-performance web applications. Specialized in React, TypeScript, and modern JavaScript ecosystems.",
+      "Senior Software Engineer with 8+ years of experience building scalable, accessible, and high-performance web applications. Specialized in React, TypeScript, and modern JavaScript ecosystems.",
     "hero.cta.contact": "Contact me",
     "hero.cta.experience": "View experience",
 
@@ -120,7 +120,7 @@ const translations = {
     "hero.kicker": "Frontend engineer",
     "hero.title": "Senior Software engineer (Frontend focus) | React & Typescript | Fullstack",
     "hero.description":
-      "Senior Front-End Engineer con más de 8 años de experiencia construyendo aplicaciones web escalables, accesibles y de alto rendimiento. Especializado en React, TypeScript y ecosistemas modernos de JavaScript.",
+      "Senior Software Engineer con más de 8 años de experiencia construyendo aplicaciones web escalables, accesibles y de alto rendimiento. Especializado en React, TypeScript y ecosistemas modernos de JavaScript.",
     "hero.cta.contact": "Contactame",
     "hero.cta.experience": "Ver experiencia",
 
