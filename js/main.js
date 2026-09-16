@@ -201,19 +201,21 @@ function initScrollProgress() {
    Binary Rain Background
    ======================================== */
 function initBinaryRain() {
-  const canvas = document.getElementById("binary-rain");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (!canvas || prefersReducedMotion.matches) return;
-
-  const context = canvas.getContext("2d");
   const layers = [
-    { fontSize: 9, columnSpacing: 38, speed: [0.2, 0.34], opacity: 0.12 },
-    { fontSize: 15, columnSpacing: 64, speed: [0.36, 0.56], opacity: 0.18 },
-    { fontSize: 24, columnSpacing: 112, speed: [0.52, 0.78], opacity: 0.27 },
+    { canvas: document.getElementById("binary-rain-far"), isBackLayer: true, fontSize: 9, columnSpacing: 38, speed: [0.2, 0.34], opacity: 0.12 },
+    { canvas: document.getElementById("binary-rain-mid"), isBackLayer: true, fontSize: 15, columnSpacing: 64, speed: [0.36, 0.56], opacity: 0.18 },
+    { canvas: document.getElementById("binary-rain-near"), fontSize: 24, columnSpacing: 112, speed: [0.52, 0.78], opacity: 0.27 },
   ];
+  const backLayerSections = [document.getElementById("hero"), document.getElementById("timeline")];
+  if (prefersReducedMotion.matches || layers.some(({ canvas }) => !canvas) || backLayerSections.some((section) => !section)) return;
+
   const trailDuration = 1200;
-  let drops = [];
-  let glyphs = [];
+  layers.forEach((layer) => {
+    layer.context = layer.canvas.getContext("2d");
+    layer.drops = [];
+    layer.glyphs = [];
+  });
   let animationFrame;
   let lastFrame = 0;
   let isRunning = false;
@@ -237,15 +239,18 @@ function initBinaryRain() {
 
   function resize() {
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = window.innerWidth * pixelRatio;
-    canvas.height = window.innerHeight * pixelRatio;
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
-    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    drops = layers.flatMap((layer) =>
-      Array.from({ length: Math.ceil(window.innerWidth / layer.columnSpacing) }, () => createDrop(layer))
-    );
-    glyphs = [];
+    layers.forEach((layer) => {
+      layer.canvas.width = window.innerWidth * pixelRatio;
+      layer.canvas.height = window.innerHeight * pixelRatio;
+      layer.canvas.style.width = `${window.innerWidth}px`;
+      layer.canvas.style.height = `${window.innerHeight}px`;
+      layer.context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      layer.drops = Array.from(
+        { length: Math.ceil(window.innerWidth / layer.columnSpacing) },
+        () => createDrop(layer)
+      );
+      layer.glyphs = [];
+    });
   }
 
   function draw(timestamp) {
@@ -254,40 +259,57 @@ function initBinaryRain() {
 
     const elapsed = Math.min(timestamp - lastFrame || 50, 100);
     lastFrame = timestamp;
-    drops.forEach((drop) => {
-      if (timestamp < drop.nextStart) return;
-      if (!drop.speed) startDrop(drop, timestamp);
+    layers.forEach((layer) => {
+      layer.drops.forEach((drop) => {
+        if (timestamp < drop.nextStart) return;
+        if (!drop.speed) startDrop(drop, timestamp);
 
-      glyphs.push({
-        character: Math.random() > 0.5 ? "0" : "1",
-        x: drop.x,
-        y: drop.y,
-        layer: drop.layer,
-        createdAt: timestamp,
+        layer.glyphs.push({
+          character: Math.random() > 0.5 ? "0" : "1",
+          x: drop.x,
+          y: drop.y,
+          createdAt: timestamp,
+        });
+        drop.y += layer.fontSize * drop.speed * (elapsed / 90);
+
+        if (drop.y > window.innerHeight + layer.fontSize * 8) {
+          drop.speed = 0;
+          drop.nextStart = timestamp + 400 + Math.random() * 2600;
+        }
       });
-      drop.y += drop.layer.fontSize * drop.speed * (elapsed / 90);
 
-      if (drop.y > window.innerHeight + drop.layer.fontSize * 8) {
-        drop.speed = 0;
-        drop.nextStart = timestamp + 400 + Math.random() * 2600;
+      layer.context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      layer.glyphs = layer.glyphs.filter((glyph) => timestamp - glyph.createdAt < trailDuration);
+      if (layer.isBackLayer) {
+        layer.context.save();
+        layer.context.beginPath();
+        backLayerSections.forEach((section) => {
+          const bounds = section.getBoundingClientRect();
+          const left = Math.max(0, bounds.left);
+          const right = Math.min(window.innerWidth, bounds.right);
+          const top = Math.max(0, bounds.top);
+          const bottom = Math.min(window.innerHeight, bounds.bottom);
+          if (right > left && bottom > top) layer.context.rect(left, top, right - left, bottom - top);
+        });
+        layer.context.clip();
       }
-    });
-
-    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    glyphs = glyphs.filter((glyph) => timestamp - glyph.createdAt < trailDuration);
-    glyphs.forEach((glyph) => {
-      const remainingOpacity = 1 - (timestamp - glyph.createdAt) / trailDuration;
-      context.fillStyle = `rgba(116, 255, 192, ${glyph.layer.opacity * remainingOpacity})`;
-      context.font = `600 ${glyph.layer.fontSize}px monospace`;
-      context.fillText(glyph.character, glyph.x, glyph.y);
+      layer.glyphs.forEach((glyph) => {
+        const remainingOpacity = 1 - (timestamp - glyph.createdAt) / trailDuration;
+        layer.context.fillStyle = `rgba(116, 255, 192, ${layer.opacity * remainingOpacity})`;
+        layer.context.font = `600 ${layer.fontSize}px monospace`;
+        layer.context.fillText(glyph.character, glyph.x, glyph.y);
+      });
+      if (layer.isBackLayer) layer.context.restore();
     });
   }
 
   function stop() {
     if (!isRunning) return;
     window.cancelAnimationFrame(animationFrame);
-    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    glyphs = [];
+    layers.forEach((layer) => {
+      layer.context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      layer.glyphs = [];
+    });
     isRunning = false;
   }
 
