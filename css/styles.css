@@ -37,6 +37,7 @@ body {
   margin: 0;
   background: var(--color-surface);
   color: var(--color-text);
+  isolation: isolate;
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 body::before {
@@ -55,6 +56,8 @@ body::before {
 
 .skip-link { position: absolute; top: -100%; left: 1rem; z-index: 2000; padding: .75rem 1.25rem; background: var(--color-accent); color: #fff; border-radius: 0 0 .75rem .75rem; font-weight: 700; text-decoration: none; }
 .skip-link:focus { top: 0; }
+.binary-rain { position: fixed; z-index: 2; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity .6s ease; }
+:root[data-theme="dark"] .binary-rain { opacity: .24; }
 .scroll-progress { position: fixed; z-index: 1200; top: 0; left: 0; right: 0; height: 3px; background: color-mix(in srgb, var(--color-border) 65%, transparent); }
 .scroll-progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--color-accent), #75b4ff); transform: scaleX(0); transform-origin: left; }
 
@@ -81,7 +84,7 @@ body::before {
 .sidebar-toggle, .sidebar-overlay { display: none; }
 
 /* Layout and headings */
-.main-content { margin-left: var(--sidebar-width); min-height: 100vh; }
+.main-content { position: relative; z-index: 1; margin-left: var(--sidebar-width); min-height: 100vh; }
 .section { max-width: 1060px; margin: 0 auto; padding: 7rem 2.5rem; }
 .section-heading { max-width: 660px; }
 .section-eyebrow, .hero-kicker { margin: 0 0 .8rem; color: var(--color-accent); font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
@@ -170,6 +173,7 @@ body::before {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .fade-in { opacity: 1; transform: none; }
+  .binary-rain { display: none; }
 }
 @media (max-width: 768px) {
   .sidebar { width: 270px; transform: translateX(-100%); transition: transform var(--transition-speed) ease; }

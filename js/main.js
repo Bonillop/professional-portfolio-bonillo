@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollSpy();
   initFadeIn();
   initScrollProgress();
+  initBinaryRain();
   initContactForm();
 });
 
@@ -86,6 +87,7 @@ function setTheme(theme) {
   const isDark = theme === "dark";
   toggle.setAttribute("aria-pressed", String(isDark));
   toggle.setAttribute("aria-label", t(isDark ? "theme.toggle.light" : "theme.toggle.dark"));
+  document.dispatchEvent(new CustomEvent("themeChanged", { detail: { theme } }));
 }
 
 function initTheme() {
@@ -193,6 +195,95 @@ function initScrollProgress() {
   }, { passive: true });
   window.addEventListener("resize", updateProgress);
   updateProgress();
+}
+
+/* ========================================
+   Binary Rain Background
+   ======================================== */
+function initBinaryRain() {
+  const canvas = document.getElementById("binary-rain");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!canvas || prefersReducedMotion.matches) return;
+
+  const context = canvas.getContext("2d");
+  const fontSize = 15;
+  const columnDensity = 63;
+  let columns = [];
+  let animationFrame;
+  let lastFrame = 0;
+  let isRunning = false;
+
+  function resize() {
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = window.innerWidth * pixelRatio;
+    canvas.height = window.innerHeight * pixelRatio;
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    columns = Array.from(
+      { length: Math.ceil(window.innerWidth / columnDensity) },
+      () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * -window.innerHeight,
+        speed: 0.35 + Math.random() * 0.35,
+      })
+    );
+  }
+
+  function draw(timestamp) {
+    animationFrame = window.requestAnimationFrame(draw);
+    if (timestamp - lastFrame < 90) return;
+
+    lastFrame = timestamp;
+    // Fade existing glyphs without painting an opaque layer over the page.
+    context.save();
+    context.globalCompositeOperation = "destination-out";
+    context.fillStyle = "rgba(0, 0, 0, 0.42)";
+    context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    context.restore();
+    context.fillStyle = "rgba(116, 255, 192, 0.24)";
+    context.font = `600 ${fontSize}px monospace`;
+
+    columns.forEach((drop) => {
+      context.fillText(Math.random() > 0.5 ? "0" : "1", drop.x, drop.y);
+      drop.y += fontSize * drop.speed;
+
+      if (drop.y > window.innerHeight && Math.random() > 0.975) {
+        drop.x = Math.random() * window.innerWidth;
+        drop.y = Math.random() * -window.innerHeight * 0.2;
+        drop.speed = 0.35 + Math.random() * 0.35;
+      }
+    });
+  }
+
+  function stop() {
+    if (!isRunning) return;
+    window.cancelAnimationFrame(animationFrame);
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    isRunning = false;
+  }
+
+  function sync() {
+    const shouldRun = getTheme() === "dark" && !document.hidden && !prefersReducedMotion.matches;
+    if (!shouldRun) {
+      stop();
+      return;
+    }
+    if (isRunning) return;
+
+    resize();
+    isRunning = true;
+    lastFrame = 0;
+    animationFrame = window.requestAnimationFrame(draw);
+  }
+
+  window.addEventListener("resize", () => {
+    if (isRunning) resize();
+  });
+  document.addEventListener("visibilitychange", sync);
+  document.addEventListener("themeChanged", sync);
+  prefersReducedMotion.addEventListener("change", sync);
+  sync();
 }
 
 /* ========================================

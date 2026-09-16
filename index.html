@@ -9,7 +9,7 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem("portfolio-theme");
-      const theme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const theme = savedTheme || "dark";
       document.documentElement.dataset.theme = theme;
     })();
   </script>
@@ -44,6 +44,7 @@
 </head>
   <body class="font-sans antialiased">
 
+  <canvas id="binary-rain" class="binary-rain" aria-hidden="true"></canvas>
   <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
 
   <!-- Skip to content -->
